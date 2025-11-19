@@ -13,79 +13,95 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> {
   int selectedIndex = 0;
-  List<Widget> screens = [
-    /// First Lesson
+
+  final PageController controller = PageController();
+
+  final List<Widget> screens = const [
     SingleSelection(),
     ImageSelection(),
     ToggleSelection(),
     MultiSelection(),
-
   ];
-  final PageController controller = PageController();
 
+  void goToPage(int index) {
+    if (index < 0 || index >= screens.length) return;
+    controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
+
       body: PageView(
-        physics: NeverScrollableScrollPhysics(),
         controller: controller,
-        children: screens,
-        onPageChanged: (v) {
-          setState(() {
-            selectedIndex = v;
-          });
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (value) {
+          setState(() => selectedIndex = value);
         },
+        children: screens,
       ),
 
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                /// back
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      controller.jumpToPage(selectedIndex - 1);
-                    });
-                  },
-                  child: Container(
-                    height: 40,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                    ),
-                    child: Icon(Icons.arrow_back_outlined,color: Colors.black),
-                  ),
+            /// BACK BUTTON
+            ElevatedButton(
+              onPressed: selectedIndex > 0
+                  ? () => goToPage(selectedIndex - 1)
+                  : null,
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                side: const BorderSide(color: Colors.black),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
                 ),
-                SizedBox(width: 10),
-                /// next
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      controller.jumpToPage(selectedIndex + 1);
-                    });
-                  },
-                  child: Container(
-                    height: 40,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                    ),
-                    child: Row(
-                      children: [
-                        Text("Next Page",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700)),
-                        SizedBox(width: 14),
-                        Icon(Icons.arrow_forward,color: Colors.white),
-                      ],
-                    ),
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ],
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.arrow_back),
+                  SizedBox(width: 6),
+                  Text("Back", style: TextStyle(fontWeight: FontWeight.w600)),
+                ],
+              ),
+            ),
+
+            /// NEXT BUTTON
+            ElevatedButton(
+              onPressed: selectedIndex < screens.length - 1
+                  ? () => goToPage(selectedIndex + 1)
+                  : null,
+              style: ElevatedButton.styleFrom(
+                elevation: 3,
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Row(
+                children: [
+                  Text("Next", style: TextStyle(fontWeight: FontWeight.w700)),
+                  SizedBox(width: 6),
+                  Icon(Icons.arrow_forward),
+                ],
+              ),
             ),
           ],
         ),
