@@ -17,20 +17,18 @@ class _UploadFileState extends State<UploadFile> {
   String? _filePath;
 
   /// pickFile method
-  Future<void> _pickFile () async {
-
+  Future<void> _pickFile() async {
     final file = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf' , 'docx' , 'doc' , 'jpg'],
+      allowedExtensions: ['pdf', 'docx', 'doc', 'jpg'],
     );
 
-    if(file != null && file.files.single.name.isNotEmpty) {
+    if (file != null && file.files.single.name.isNotEmpty) {
       setState(() {
         _fileName = file.files.single.name;
         _filePath = file.files.single.path;
       });
     }
-
   }
 
   /// view file
@@ -52,110 +50,98 @@ class _UploadFileState extends State<UploadFile> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: Colors.black12),
-
               ),
 
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                      width: 60,
-                      "assets/svgs/doc.svg",
-                  ),
+                  SvgPicture.asset(width: 60, "assets/svgs/doc.svg"),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _fileName == null
-                        ? "Upload File"
-                        : "$_fileName",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        _fileName == null ? "Upload File" : "$_fileName",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text("pdf, docx, doc, jpg"),
                     ],
                   ),
                   Spacer(),
 
-
                   PopupMenuButton(
-                      color: Colors.white,
-                      itemBuilder: (context) {
-                        return [
-
-                          /// upload
-                          PopupMenuItem(
-                              onTap: _pickFile,
-                              child: Row(
-                                children: [
-                                  Icon(CupertinoIcons.arrow_up_doc),
-                                  SizedBox(width: 13),
-                                  Text("Upload"),
-                                ],
-                              ),
+                    color: Colors.white,
+                    itemBuilder: (context) {
+                      return [
+                        /// upload
+                        PopupMenuItem(
+                          onTap: _pickFile,
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.arrow_up_doc),
+                              SizedBox(width: 13),
+                              Text("Upload"),
+                            ],
                           ),
+                        ),
 
-                          /// View
-                          PopupMenuItem(
-                              onTap: () {},
-                              child: Row(
-                                children: [
-                                  Icon(CupertinoIcons.eye),
-                                  SizedBox(width: 13),
-                                  Text("View"),
-                                ],
-                              ),
+                        /// View
+                        PopupMenuItem(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.eye),
+                              SizedBox(width: 13),
+                              Text("View"),
+                            ],
                           ),
+                        ),
 
-                          /// change
-                          PopupMenuItem(
-                              onTap: _pickFile,
-                              child: Row(
-                                children: [
-                                  Icon(CupertinoIcons.refresh),
-                                  SizedBox(width: 13),
-                                  Text("Change"),
-                                ],
-                              ),
+                        /// change
+                        PopupMenuItem(
+                          onTap: _pickFile,
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.refresh),
+                              SizedBox(width: 13),
+                              Text("Change"),
+                            ],
                           ),
+                        ),
 
-
-                          /// delete
-                          PopupMenuItem(
-                              onTap: () {
-                                setState(() {
-                                  _fileName = null;
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(CupertinoIcons.delete_solid, color: Colors.red),
-                                  SizedBox(width: 13),
-                                  Text("Delete",style: TextStyle(
-                                    color: Colors.red,
-                                  )),
-                                ],
+                        /// delete
+                        PopupMenuItem(
+                          onTap: () {
+                            setState(() {
+                              _fileName = null;
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                CupertinoIcons.delete_solid,
+                                color: Colors.red,
                               ),
+                              SizedBox(width: 13),
+                              Text(
+                                "Delete",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
                           ),
-
-                        ];
-                      },
+                        ),
+                      ];
+                    },
                   ),
                 ],
               ),
             ),
             SizedBox(height: 50),
-            if(_filePath != null && _filePath!.endsWith('pdf'))
-            SizedBox(
-              width: 230,
-              height: 400,
-              child: SfPdfViewer.file(
-                File(
-                  _filePath!,
-                ),
+            if (_filePath != null && _filePath!.endsWith('pdf'))
+              SizedBox(
+                width: 230,
+                height: 400,
+                child: SfPdfViewer.file(File(_filePath!)),
               ),
-            ),
           ],
         ),
       ),

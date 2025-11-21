@@ -42,7 +42,7 @@ flutter:
     - assets/animals/
     - assets/laptop/
     - assets/svgs/
-    - assets/acc.jpg
+    
 
   # fonts:
   #   - family: Schyler

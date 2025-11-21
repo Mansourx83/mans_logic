@@ -41,7 +41,9 @@ class _ToggleSelectionState extends State<ToggleSelection> {
                   ),
                   child: const CircleAvatar(
                     radius: 140,
-                    backgroundImage: AssetImage("assets/animals/download.jpg"),
+                    backgroundImage: AssetImage(
+                      "assets/animals/white-tiger.png",
+                    ),
                   ),
                 ),
 
