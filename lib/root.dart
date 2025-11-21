@@ -30,8 +30,8 @@ class _RootState extends State<Root> {
     //logic deal with image and videos,file
     UploadImage(),
     UploadMultiImgs(),
-    UploadFile(),
     UploadVideo(),
+    UploadFile(),
   ];
 
   void goToPage(int index) {

@@ -10,105 +10,192 @@ class UploadVideo extends StatefulWidget {
   State<UploadVideo> createState() => _UploadVideoState();
 }
 
-
 class _UploadVideoState extends State<UploadVideo> {
-
   XFile? selectedVideo;
   VideoPlayerController? _controller;
 
+  /// pick and load video
+  Future<void> _uploadVideo() async {
+    final picked = await ImagePicker().pickVideo(source: ImageSource.gallery);
 
+    if (picked != null) {
+      // dispose previous video
+      _controller?.dispose();
 
-  /// upload video
-  Future<void> _uploadVideo () async {
-    final XFile? pickedVideo = await ImagePicker().pickVideo(source: ImageSource.gallery);
-
-    if(pickedVideo != null) {
-
-      _controller = VideoPlayerController.file(File(pickedVideo.path));
-
+      _controller = VideoPlayerController.file(File(picked.path));
       await _controller!.initialize();
+      _controller!.setLooping(true);
+      _controller!.play();
+
+      setState(() {
+        selectedVideo = picked;
+      });
     }
-
-    setState(() {
-      selectedVideo = pickedVideo;
-    });
-
-    _controller!.play();
-
-    _controller!.setLooping(true);
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
   void dispose() {
-    if(_controller != null) {
-      _controller!.dispose();
-    }
+    _controller?.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red.shade900.withRed(10),
-
+      backgroundColor: const Color(0xff1a1a1d),
 
       body: Center(
         child: Column(
           children: [
+            const SizedBox(height: 120),
 
-            /// video
-            SizedBox(height: 140),
-
+            // -------------------------------------------------------
+            // VIDEO PLAYER CONTAINER  (FULL FIT / COVER)
+            // -------------------------------------------------------
             Container(
-              width: 300,
-              height: 170,
+              width: 310,
+              height: 200,
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.white.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.15),
+                  width: 1.2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.25),
+                    blurRadius: 12,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
 
-              child:
-              _controller != null &&  _controller!.value.isInitialized
-              ? ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: VideoPlayer(
-                    _controller!,
-                ),
-              ) : null,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: (_controller != null && _controller!.value.isInitialized)
+                    ? Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // ---------- FULL FIT VIDEO ----------
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              final videoWidth = _controller!.value.size.width;
+                              final videoHeight =
+                                  _controller!.value.size.height;
+
+                              final containerWidth = constraints.maxWidth;
+                              final containerHeight = constraints.maxHeight;
+
+                              // aspect ratios
+                              double videoAspect = videoWidth / videoHeight;
+                              double containerAspect =
+                                  containerWidth / containerHeight;
+
+                              // scale factor to ensure full cover
+                              double scale = containerAspect > videoAspect
+                                  ? containerAspect / videoAspect
+                                  : videoAspect / containerAspect;
+
+                              return FittedBox(
+                                fit: BoxFit.cover,
+                                child: Transform.scale(
+                                  scale: scale,
+                                  child: SizedBox(
+                                    width: videoWidth,
+                                    height: videoHeight,
+                                    child: VideoPlayer(_controller!),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+
+                          // play/pause overlay button
+                          GestureDetector(
+                            onTap: () {
+                              if (_controller!.value.isPlaying) {
+                                _controller!.pause();
+                              } else {
+                                _controller!.play();
+                              }
+                              setState(() {});
+                            },
+                            child: AnimatedOpacity(
+                              opacity: _controller!.value.isPlaying ? 0 : 1,
+                              duration: const Duration(milliseconds: 200),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.4),
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: const EdgeInsets.all(12),
+                                child: const Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    // --------- Placeholder before picking video ---------
+                    : Center(
+                        child: Icon(
+                          Icons.video_collection_outlined,
+                          color: Colors.white.withOpacity(0.6),
+                          size: 60,
+                        ),
+                      ),
+              ),
             ),
 
+            const SizedBox(height: 40),
 
-            SizedBox(height: 40),
-
-            /// upload button
+            // -------------------------------------------------------
+            // UPLOAD BUTTON
+            // -------------------------------------------------------
             GestureDetector(
               onTap: _uploadVideo,
               child: Container(
-                width: 180,
-                height: 40,
+                width: 200,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(child: Text(
-                  "Upload Video",
-                  style: TextStyle(
-                    color: Colors.white,
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.25),
+                    width: 1.2,
                   ),
-                )),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.upload, color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(
+                      "Upload Video",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-
           ],
         ),
       ),
-
     );
   }
 }
