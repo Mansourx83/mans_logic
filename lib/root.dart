@@ -3,6 +3,10 @@ import 'package:mans_logic/screens/selection_logic/image_selection.dart';
 import 'package:mans_logic/screens/selection_logic/multi_selection.dart';
 import 'package:mans_logic/screens/selection_logic/single_selection.dart';
 import 'package:mans_logic/screens/selection_logic/toggle_selection.dart';
+import 'package:mans_logic/screens/Attachments_Images_logic/upload_file.dart';
+import 'package:mans_logic/screens/Attachments_Images_logic/upload_image.dart';
+import 'package:mans_logic/screens/Attachments_Images_logic/upload_multi_imgs.dart';
+import 'package:mans_logic/screens/Attachments_Images_logic/upload_video.dart';
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -17,10 +21,17 @@ class _RootState extends State<Root> {
   final PageController controller = PageController();
 
   final List<Widget> screens = const [
+    //logic selection
     SingleSelection(),
     ImageSelection(),
     ToggleSelection(),
     MultiSelection(),
+
+    //logic deal with image and videos,file
+    UploadImage(),
+    UploadMultiImgs(),
+    UploadFile(),
+    UploadVideo(),
   ];
 
   void goToPage(int index) {
