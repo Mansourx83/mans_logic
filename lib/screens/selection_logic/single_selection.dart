@@ -26,14 +26,14 @@ class _SingleSelectionState extends State<SingleSelection> {
     return Scaffold(
       backgroundColor: Color(0xff242424),
       body: Padding(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(20),
         child: GridView.builder(
           itemCount: gifts.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 10,
-            mainAxisSpacing: 40,
-            childAspectRatio: 0.8,
+            mainAxisSpacing: 50,
+            childAspectRatio: 0.7,
           ),
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -43,10 +43,11 @@ class _SingleSelectionState extends State<SingleSelection> {
                 });
               },
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
                   selectedIndex == index
                       ? Padding(
-                          padding: const EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(top: 30),
                           child: Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -91,11 +92,10 @@ class _SingleSelectionState extends State<SingleSelection> {
 
                   selectedIndex == index
                       ? Positioned(
-                          bottom: 0,
+                          bottom: -5,
                           right: 0,
                           left: 0,
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 2),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 236, 52, 113),
                               borderRadius: BorderRadius.circular(4),

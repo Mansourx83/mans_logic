@@ -41,9 +41,7 @@ class _ToggleSelectionState extends State<ToggleSelection> {
                   ),
                   child: const CircleAvatar(
                     radius: 140,
-                    backgroundImage: AssetImage(
-                      "assets/animals/white-tiger.png",
-                    ),
+                    backgroundImage: AssetImage("assets/animals/person.jpg"),
                   ),
                 ),
 
@@ -86,7 +84,7 @@ class _ToggleSelectionState extends State<ToggleSelection> {
               ],
             ),
 
-            const SizedBox(height: 110),
+            const SizedBox(height: 50),
 
             // --------------------------------------------------------
             // FOLLOW STATUS CARD
@@ -127,8 +125,6 @@ class _ToggleSelectionState extends State<ToggleSelection> {
                 ],
               ),
             ),
-
-            const SizedBox(height: 100),
           ],
         ),
       ),
