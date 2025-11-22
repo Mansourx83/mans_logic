@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mans_logic/screens/Search_ListFiltering_logic/search_feature.dart';
 import 'package:mans_logic/screens/selection_logic/image_selection.dart';
 import 'package:mans_logic/screens/selection_logic/multi_selection.dart';
 import 'package:mans_logic/screens/selection_logic/single_selection.dart';
@@ -32,6 +33,10 @@ class _RootState extends State<Root> {
     UploadMultiImgs(),
     UploadVideo(),
     UploadFile(),
+
+    
+    //Search & List Filtering
+    SearchFeature(),
   ];
 
   void goToPage(int index) {
