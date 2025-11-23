@@ -40,9 +40,6 @@ class _RootState extends State<Root> {
 
     //Form Validation
     FormLogic(),
-
-
-    
   ];
 
   void goToPage(int index) {

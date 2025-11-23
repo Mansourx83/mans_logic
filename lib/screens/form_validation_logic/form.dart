@@ -15,7 +15,9 @@ class _FormLogicState extends State<FormLogic> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
-  void _update () {
+  bool _isPasswordVisible = false;
+
+  void _update() {
     setState(() {});
   }
 
@@ -35,143 +37,172 @@ class _FormLogicState extends State<FormLogic> {
 
   @override
   Widget build(BuildContext context) {
+    bool isButtonActive = _email.text.isNotEmpty && _password.text.isNotEmpty;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: const Color(0xff121212),
 
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Form(
-            key : _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 130),
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 120),
 
-                /// Email
-                TextFormField(
-                  controller: _email,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  cursorColor: Colors.white,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
+                  /// ---------------- Email ----------------
+                  TextFormField(
+                    controller: _email,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.emailAddress,
 
-                    if(value == null || value.isEmpty) {
-                      return 'Fill The Email';
-                    }
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email is required';
+                      }
+                      if (!value.endsWith("@gmail.com")) {
+                        return 'Enter a valid Gmail';
+                      }
+                      return null;
+                    },
 
-                    if(!value.endsWith("@gmail.com")) {
-                      return 'Write Email In Right Format';
-                    }
+                    decoration: InputDecoration(
+                      hintText: "Email Address",
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      prefixIcon: const Icon(
+                        Icons.email_outlined,
+                        color: Colors.white70,
+                      ),
 
-
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Email Address",
-                    prefixIcon: Icon(Icons.email_outlined),
-                    hintStyle: TextStyle(
-                      color: Colors.white54,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.white24),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.blueAccent),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
 
-                /// Password
-                TextFormField(
-                  controller: _password,
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return 'Fill The Password';
-                    }
-                    if(value.length < 9) {
-                      return 'Password Must be 9 numbers';
-                    }
-                    return null;
-                  },
-                  maxLength: 9,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  cursorColor: Colors.white,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                    prefixIcon: Icon(Icons.lock_open),
-                    suffixIcon: Icon(CupertinoIcons.eye),
-                    hintStyle: TextStyle(
-                      color: Colors.white54,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Colors.white,
+                  const SizedBox(height: 20),
+
+                  /// ---------------- Password ----------------
+                  TextFormField(
+                    controller: _password,
+                    maxLength: 9,
+                    obscureText: !_isPasswordVisible,
+                    cursorColor: Colors.white,
+                    style: const TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.number,
+
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Password is required';
+                      }
+                      if (value.length < 9) {
+                        return 'Password must be 9 digits';
+                      }
+                      return null;
+                    },
+
+                    decoration: InputDecoration(
+                      counterText: "",
+                      hintText: "Password",
+                      hintStyle: const TextStyle(color: Colors.white54),
+
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: Colors.white70,
+                      ),
+
+                      suffixIcon: GestureDetector(
+                        onTap: () => setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        }),
+                        child: Icon(
+                          _isPasswordVisible
+                              ? CupertinoIcons.eye_slash_fill
+                              : CupertinoIcons.eye_fill,
+                          color: Colors.white70,
+                        ),
+                      ),
+
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.white24),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.blueAccent),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 30),
 
-                /// Login
-                GestureDetector(
-                  onTap: () {
-                    if(_formKey.currentState!.validate()) {
-                      setState(() {
-                        request = "Request";
-                      });
-                    } else {
-                      return;
-                    }
+                  const SizedBox(height: 35),
 
-                  },
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color:
-                      _email.text == "" && _password.text == ''
-                      ? Colors.grey
-                      : Colors.blue,
-                      borderRadius: BorderRadius.circular(9),
+                  /// ---------------- Login Button ----------------
+                  GestureDetector(
+                    onTap: () {
+                      if (!isButtonActive) return;
+
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          request = "Request Sent ✓";
+                        });
+                      }
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isButtonActive
+                            ? Colors.blueAccent
+                            : Colors.grey.shade700,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: Center(child: Text("Login")),
                   ),
-                ),
 
-                SizedBox(height: 120),
+                  const SizedBox(height: 100),
 
-                /// request
-                Text("Request : $request" , style: TextStyle(color: Colors.white,),),
+                  /// ---------------- Response ----------------
+                  Text(
+                    "Request : $request",
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
 
-                SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                /// controllers effect
-                Text("Email : ${_email.text.replaceAll(" ", "")}" , style: TextStyle(color: Colors.white,),),
-                Text("Password : ${_password.text}" , style: TextStyle(color: Colors.white,),),
-
-
-              ],
-
-
+                  /// ---------------- Live Controllers Preview ----------------
+                  Text(
+                    "Email : ${_email.text}",
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  Text(
+                    "Password : ${_password.text}",
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-
       ),
     );
   }
