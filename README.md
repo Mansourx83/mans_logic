@@ -54,3 +54,6 @@ dependencies:
   file_picker: ^5.0.0
   syncfusion_flutter_pdfviewer: ^20.1.59
   flutter_svg: ^1.1.0
+
+---
+> **Developed with ❤️ using Flutter.**
