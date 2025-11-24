@@ -1,16 +1,56 @@
-# mans_logic
+# Flutter UI & Logic Showcase
 
-A new Flutter project.
+This project is a complete Flutter demonstration that includes multiple UI patterns and logical implementations used in most mobile applications.  
+It is designed to help developers understand real-life techniques such as image uploading, file selection, video playback, form validation, pagination, infinite scrolling, selections, and list filtering.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ⭐ Features Demonstrated
 
-A few resources to get you started if this is your first Flutter project:
+The project includes:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 📂 Attachments & Media Handling
+- Pick and upload **single images**
+- Pick **multiple images**
+- Pick and play **videos** with proper container fitting
+- Pick and open **files** (PDF, DOCX, JPG, etc.)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 📝 Form Validation
+- Live form validation  
+- Email & password validation with custom rules  
+- Dynamic buttons (enabled/disabled based on input)
+
+### 🔍 Search & Filter
+- Real-time search
+- Category filter buttons
+- Sort alphabetically / by price
+
+### 📦 Pagination & Infinite Scroll
+- Load more data while scrolling  
+- Display loading indicators  
+- Stop when there is no more data  
+- Smooth user experience with lazy loading
+
+### ✔️ Selection Logic
+- Single item selection  
+- Multiple item selection  
+- Toggle selection  
+- Image selection logic
+
+Each screen is well-commented to ensure understanding of how the logic works step-by-step.
+
+---
+
+## 📦 Required Dependencies
+
+Add the following packages in your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^0.8.0
+  video_player: ^2.5.0
+  file_picker: ^5.0.0
+  syncfusion_flutter_pdfviewer: ^20.1.59
+  flutter_svg: ^1.1.0
